@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, FormEvent } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import Image from "next/image";
 import { useMegaLeadForm } from "@/hooks/useMegaLeadForm";
 import { formatPhone, isValidPhone } from "@/hooks/usePhoneValidation";
@@ -36,7 +36,6 @@ function useReveal() {
 /* ─── Lead Form ─── */
 function LeadForm({ compact = false }: { compact?: boolean }) {
   const { submit } = useMegaLeadForm();
-  const addressRef = useRef<HTMLInputElement>(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,26 +46,6 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState("");
-
-  /* Google Places address autocomplete — US only */
-  useEffect(() => {
-    if (typeof window === "undefined" || !addressRef.current) return;
-    const init = () => {
-      const g = (window as any).google;
-      if (!g?.maps?.places) return;
-      const ac = new g.maps.places.Autocomplete(addressRef.current, {
-        types: ["address"],
-        componentRestrictions: { country: "us" },
-        fields: ["formatted_address"],
-      });
-      ac.addListener("place_changed", () => {
-        const place = ac.getPlace();
-        if (place?.formatted_address) setAddress(place.formatted_address);
-      });
-    };
-    if ((window as any).google?.maps?.places) { init(); }
-    else { (window as any).__initAddressAutocomplete = init; }
-  }, []);
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -170,8 +149,8 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
 
       <div>
         <label htmlFor="address" className="mb-1 block text-xs font-semibold text-gray-700">Home Address *</label>
-        <input id="address" ref={addressRef} type="text" autoComplete="off" value={address}
-          onChange={(e) => setAddress(e.target.value)} className={inp("address")} placeholder="Start typing your US address..." />
+        <input id="address" type="text" autoComplete="street-address" value={address}
+          onChange={(e) => setAddress(e.target.value)} className={inp("address")} placeholder="123 Main St, Paramus, NJ" />
         {errors.address && <p className="mt-1 text-xs text-red-500">{errors.address}</p>}
       </div>
 
