@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "Custom Blinds, Shades & Motorized Window Treatments | Free Installation — Blinds Crafter NJ",
   description:
     "Northern NJ's premium window treatment specialists. Custom blinds, shades, and motorized treatments with free professional installation, BOGO free motorization, and free smart home integration. Request your free in-home consultation.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.png", sizes: "270x270", type: "image/png" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+  },
   openGraph: {
     title: "Free Installation + BOGO Motorization | Blinds Crafter NJ",
     description:
@@ -37,6 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         {/* MegaTag optimizer */}
         <script src="https://cdn.gomega.ai/scripts/optimizer.min.js" async />
+        {/* CallTrackingMetrics (CTM) — phone-call attribution */}
+        <script src="https://572388.tctm.co/t.js" async />
         {/* GTM head snippet */}
         <script
           dangerouslySetInnerHTML={{
