@@ -7,8 +7,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-// SITE_KEY populated after Mega Admin site registration
-const SITE_KEY = "PENDING_SITE_KEY";
+const SITE_KEY = "ts6zcypbx5mjybwa";
 const GTM_ID = "GTM-TWQQT5LF";
 const PIXEL_ID = "894485915971225";
 

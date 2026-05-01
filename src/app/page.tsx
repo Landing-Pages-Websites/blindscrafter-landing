@@ -11,9 +11,8 @@ const PHONE = "855-578-6788";
 const PHONE_HREF = "tel:18555786788";
 const CTA_TEXT = "Get My Free Consultation";
 
-// TRACKING — siteKey updated after Mega Admin registration
 const TRACKING = {
-  siteKey: "PENDING_SITE_KEY",
+  siteKey: "ts6zcypbx5mjybwa",
   gtmId: "GTM-TWQQT5LF",
   pixelId: "894485915971225",
 };

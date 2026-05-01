@@ -2,10 +2,9 @@
 
 import { useEffect, useCallback, useRef } from "react";
 
-// SITE_ID will be populated after Mega Admin site registration
 const CONFIG = {
   CUSTOMER_ID: "e2b8b9c2-e15e-43f8-ab9c-232af41493a2",
-  SITE_ID: "PENDING_SITE_REGISTRATION",
+  SITE_ID: "d89946e4-c32c-415f-8c4b-4ca7769dcd46",
   SOURCE_PROVIDER: "customer-landing-blindscrafter",
   ENDPOINT: "https://analytics.gomega.ai/submission/submit",
 };
