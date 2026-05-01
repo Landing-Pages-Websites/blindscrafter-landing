@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 const SITE_KEY = "ts6zcypbx5mjybwa";
@@ -12,35 +14,29 @@ const GTM_ID = "GTM-TWQQT5LF";
 const PIXEL_ID = "894485915971225";
 
 export const metadata: Metadata = {
-  title: "Custom Blinds & Shades | Free Installation + Smart Home Integration — Blinds Crafter NJ",
+  title: "Custom Blinds, Shades & Motorized Window Treatments | Free Installation — Blinds Crafter NJ",
   description:
-    "Northern NJ's premium custom window treatment specialists. Get free installation, BOGO free motorization, and free smart home integration (Alexa, Google Home, HomeKit). Request your free consultation today.",
+    "Northern NJ's premium window treatment specialists. Custom blinds, shades, and motorized treatments with free professional installation, BOGO free motorization, and free smart home integration. Request your free in-home consultation.",
   openGraph: {
-    title: "Free Installation + Smart Home Integration | Blinds Crafter NJ",
+    title: "Free Installation + BOGO Motorization | Blinds Crafter NJ",
     description:
-      "Custom blinds, shades & motorized window treatments for NJ homes. Free installation, BOGO motorization. Book your free consultation.",
+      "Custom blinds, shades & motorized window treatments for NJ homes valued $700k+. Free installation, BOGO motorization, free smart home integration (Alexa, Google Home, HomeKit).",
     images: ["/images/logo-white.webp"],
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={poppins.variable}>
       <head>
-        {/* MegaTag + GTM + Pixel config */}
+        {/* MegaTag config — must be before optimizer script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `window.MEGA_TAG_CONFIG={siteKey:"${SITE_KEY}",gtmId:"${GTM_ID}",pixelId:"${PIXEL_ID}"};`,
           }}
         />
-        <script
-          src="https://cdn.gomega.ai/scripts/optimizer.min.js"
-          async
-        />
+        {/* MegaTag optimizer */}
+        <script src="https://cdn.gomega.ai/scripts/optimizer.min.js" async />
         {/* GTM head snippet */}
         <script
           dangerouslySetInnerHTML={{

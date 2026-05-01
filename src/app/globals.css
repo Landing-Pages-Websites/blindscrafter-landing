@@ -1,19 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Navy brand (header bg) + warm gold accent for CTAs */
-  --color-navy: #0f2340;
-  --color-navy-dark: #091828;
-  --color-navy-light: #1a3a5c;
-  --color-gold: #d4920a;
-  --color-gold-dark: #b87c08;
-  --color-gold-light: #f0a90c;
-  --color-cream: #faf8f4;
-  --color-charcoal: #1f2937;
-  --color-muted: #6b7280;
+  /* Blinds Crafter brand — terracotta primary, deep espresso dark bg */
+  --color-brand:        #BC4F35;
+  --color-brand-dark:   #a3432d;
+  --color-brand-light:  #d4705a;
+  --color-dark:         #1a0e0b;
+  --color-dark-2:       #2a1710;
+  --color-cream:        #faf6f4;
+  --color-charcoal:     #1f2937;
+  --color-muted:        #6b7280;
 
-  --font-display: "Georgia", "Times New Roman", serif;
-  --font-body: "Inter", -apple-system, "system-ui", sans-serif;
+  --font-display: "Poppins", "Georgia", serif;
+  --font-body:    "Poppins", -apple-system, "system-ui", sans-serif;
 }
 
 html {
@@ -41,19 +40,18 @@ body {
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
 
-/* Gold CTA pulse */
-@keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 146, 10, 0.45); }
-  50% { box-shadow: 0 0 0 10px rgba(212, 146, 10, 0); }
+/* CTA pulse animation */
+@keyframes pulse-brand {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(188, 79, 53, 0.45); }
+  50%       { box-shadow: 0 0 0 10px rgba(188, 79, 53, 0); }
 }
 
-.pulse-gold {
-  animation: pulse-gold 2.4s ease-in-out infinite;
+.pulse-brand {
+  animation: pulse-brand 2.4s ease-in-out infinite;
 }
 
 /* Sticky header shadow on scroll */
 .header-shadow {
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
