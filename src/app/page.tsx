@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
+import { useEffect, useRef, useState, FormEvent } from "react";
 import Image from "next/image";
 import { useMegaLeadForm } from "@/hooks/useMegaLeadForm";
 import { formatPhone, isValidPhone } from "@/hooks/usePhoneValidation";
@@ -36,6 +36,27 @@ function useReveal() {
 /* ─── Lead Form ─── */
 function LeadForm({ compact = false }: { compact?: boolean }) {
   const { submit } = useMegaLeadForm();
+  const addressRef = useRef<HTMLInputElement>(null);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const fetchSuggestions = (val: string) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (val.length < 3) { setSuggestions([]); return; }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&countrycodes=us&addressdetails=1&limit=5&q=${encodeURIComponent(val)}`,
+          { headers: { "Accept-Language": "en" } }
+        );
+        const data = await res.json();
+        setSuggestions(data.map((d: any) => d.display_name));
+        setShowSuggestions(true);
+      } catch { setSuggestions([]); }
+    }, 350);
+  };
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -147,10 +168,33 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
         {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
       </div>
 
-      <div>
+      <div className="relative">
         <label htmlFor="address" className="mb-1 block text-xs font-semibold text-gray-700">Home Address *</label>
-        <input id="address" type="text" autoComplete="street-address" value={address}
-          onChange={(e) => setAddress(e.target.value)} className={inp("address")} placeholder="123 Main St, Paramus, NJ" />
+        <input
+          id="address"
+          ref={addressRef}
+          type="text"
+          autoComplete="off"
+          value={address}
+          onChange={(e) => { setAddress(e.target.value); fetchSuggestions(e.target.value); }}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+          onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+          className={inp("address")}
+          placeholder="123 Main St, Paramus, NJ"
+        />
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="absolute z-50 mt-1 max-h-48 w-full overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg text-sm">
+            {suggestions.map((s, i) => (
+              <li
+                key={i}
+                className="cursor-pointer px-4 py-2 hover:bg-[#BC4F35]/10 text-gray-700"
+                onMouseDown={() => { setAddress(s); setSuggestions([]); setShowSuggestions(false); }}
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        )}
         {errors.address && <p className="mt-1 text-xs text-red-500">{errors.address}</p>}
       </div>
 
@@ -159,11 +203,11 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
         <select id="windowsCount" name="windowsCount" value={windowsCount}
           onChange={(e) => setWindowsCount(e.target.value)}
           className={`${inp("windowsCount")} appearance-none`}>
-          <option value="">Select number of windows/blinds</option>
-          <option value="1-5">1–5 windows/blinds</option>
-          <option value="5-10">5–10 windows/blinds</option>
-          <option value="10-15">10–15 windows/blinds</option>
-          <option value="15+">15+ windows/blinds</option>
+          <option value="">Select number of windows</option>
+          <option value="1-5">1–5 windows</option>
+          <option value="5-10">5–10 windows</option>
+          <option value="10-15">10–15 windows</option>
+          <option value="15+">15+ windows</option>
         </select>
         {errors.windowsCount && <p className="mt-1 text-xs text-red-500">{errors.windowsCount}</p>}
       </div>
