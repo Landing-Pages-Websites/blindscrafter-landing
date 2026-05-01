@@ -52,6 +52,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         {/* CTM */}
         <script src="https://572388.tctm.co/t.js" async />
+        {/* Google Maps Places — address autocomplete (requires NEXT_PUBLIC_GMAPS_KEY env var) */}
+        {process.env.NEXT_PUBLIC_GMAPS_KEY && (
+          <script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GMAPS_KEY}&libraries=places&callback=__initAddressAutocomplete`} async />
+        )}
       </head>
       <body className="antialiased">
         <noscript>
