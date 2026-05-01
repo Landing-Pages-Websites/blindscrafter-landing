@@ -310,11 +310,29 @@ export default function Home() {
                 </ul>
 
                 {/* Trust bar */}
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/60">
+                <div className="mb-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/60">
                   <span className="flex items-center gap-1.5"><StarIcon /><strong className="text-white">4.9</strong> Google Rating</span>
                   <span>200+ NJ Homeowners</span>
                   <span>NJ Licensed &amp; Insured</span>
                   <span>Same-Day Response</span>
+                </div>
+
+                {/* Hero CTAs */}
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href="#contact"
+                    onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
+                    className="pulse-brand inline-flex items-center justify-center rounded-xl bg-[#BC4F35] px-8 py-4 text-base font-bold text-white shadow-lg transition hover:bg-[#a3432d]"
+                  >
+                    Get My Free Consultation
+                  </a>
+                  <a
+                    href={PHONE_HREF}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 px-8 py-4 text-base font-semibold text-white transition hover:border-white hover:bg-white/10"
+                  >
+                    <PhoneIcon />
+                    {PHONE}
+                  </a>
                 </div>
               </div>
 
