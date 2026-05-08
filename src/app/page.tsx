@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, FormEvent } from "react";
+import { useEffect, useId, useRef, useState, FormEvent } from "react";
 import Image from "next/image";
 import { useMegaLeadForm } from "@/hooks/useMegaLeadForm";
 import { formatPhone, isValidPhone } from "@/hooks/usePhoneValidation";
@@ -35,6 +35,8 @@ function useReveal() {
 
 /* ─── Lead Form ─── */
 function LeadForm({ compact = false }: { compact?: boolean }) {
+  const fid = useId();
+  const id = (k: string) => `${k}-${fid}`;
   const { submit } = useMegaLeadForm();
   const addressRef = useRef<HTMLInputElement>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -133,7 +135,6 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
   return (
     <form
       onSubmit={handleSubmit}
-      noValidate
       className={`rounded-2xl bg-white shadow-xl ${compact ? "p-6" : "p-6 lg:p-8"} space-y-4`}
       aria-label="Free in-home consultation form"
     >
@@ -148,40 +149,42 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label htmlFor="firstName" className="mb-1 block text-xs font-semibold text-gray-700">First Name *</label>
-          <input id="firstName" type="text" autoComplete="given-name" value={firstName}
+          <label htmlFor={id("firstName")} className="mb-1 block text-xs font-semibold text-gray-700">First Name *</label>
+          <input id={id("firstName")} name="firstName" type="text" autoComplete="given-name" required value={firstName}
             onChange={(e) => setFirstName(e.target.value)} className={inp("firstName")} placeholder="Jane" />
           {errors.firstName && <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>}
         </div>
         <div>
-          <label htmlFor="lastName" className="mb-1 block text-xs font-semibold text-gray-700">Last Name *</label>
-          <input id="lastName" type="text" autoComplete="family-name" value={lastName}
+          <label htmlFor={id("lastName")} className="mb-1 block text-xs font-semibold text-gray-700">Last Name *</label>
+          <input id={id("lastName")} name="lastName" type="text" autoComplete="family-name" required value={lastName}
             onChange={(e) => setLastName(e.target.value)} className={inp("lastName")} placeholder="Smith" />
           {errors.lastName && <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>}
         </div>
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-1 block text-xs font-semibold text-gray-700">Email Address *</label>
-        <input id="email" type="email" autoComplete="email" value={email}
+        <label htmlFor={id("email")} className="mb-1 block text-xs font-semibold text-gray-700">Email Address *</label>
+        <input id={id("email")} name="email" type="email" autoComplete="email" required value={email}
           onChange={(e) => setEmail(e.target.value)} className={inp("email")} placeholder="jane@example.com" />
         {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="phone" className="mb-1 block text-xs font-semibold text-gray-700">Phone Number *</label>
-        <input id="phone" type="tel" autoComplete="tel" value={phone}
+        <label htmlFor={id("phone")} className="mb-1 block text-xs font-semibold text-gray-700">Phone Number *</label>
+        <input id={id("phone")} name="phone" type="tel" autoComplete="tel" required inputMode="tel" pattern="[0-9 ()+\-]*" value={phone}
           onChange={(e) => setPhone(formatPhone(e.target.value))} className={inp("phone")} placeholder="(201) 555-0100" />
         {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
       </div>
 
       <div className="relative">
-        <label htmlFor="address" className="mb-1 block text-xs font-semibold text-gray-700">Home Address *</label>
+        <label htmlFor={id("address")} className="mb-1 block text-xs font-semibold text-gray-700">Home Address *</label>
         <input
-          id="address"
+          id={id("address")}
+          name="address"
           ref={addressRef}
           type="text"
           autoComplete="off"
+          required
           value={address}
           onChange={(e) => { setAddress(e.target.value); fetchSuggestions(e.target.value); }}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
@@ -206,8 +209,8 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
       </div>
 
       <div>
-        <label htmlFor="windowsCount" className="mb-1 block text-xs font-semibold text-gray-700">How many windows/blinds do you need? *</label>
-        <select id="windowsCount" name="windowsCount" value={windowsCount}
+        <label htmlFor={id("windowsCount")} className="mb-1 block text-xs font-semibold text-gray-700">How many windows/blinds do you need? *</label>
+        <select id={id("windowsCount")} name="windowsCount" required value={windowsCount}
           onChange={(e) => setWindowsCount(e.target.value)}
           className={`${inp("windowsCount")} appearance-none`}>
           <option value="">Select number of windows</option>
