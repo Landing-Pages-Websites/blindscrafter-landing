@@ -88,13 +88,20 @@ function LeadForm({ compact = false }: { compact?: boolean }) {
     setServerError("");
     try {
       await submit({
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
         email: email.trim().toLowerCase(),
         phone: phone.replace(/\D/g, ""),
         address: address.trim(),
-        windows_count: windowsCount,
+        windowsCount: windowsCount,
       });
+      // Manual GTM/optimizer tracking push (Next.js preventDefault hides native submit)
+      if (typeof window !== "undefined") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const w = window as any;
+        w.dataLayer = w.dataLayer || [];
+        w.dataLayer.push({ event: "form_submission", form_id: "blindscrafter-lead-form", value: 0 });
+      }
       setSubmitted(true);
     } catch {
       setServerError("Something went wrong. Please try again or call us directly.");
